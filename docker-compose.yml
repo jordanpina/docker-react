@@ -1,0 +1,25 @@
+version: '3'
+services: 
+  web:
+    build:
+      # where we want all these files and folders to be specified from
+      context: .
+      # what is the name of the dockerfile?
+      dockerfile: Dockerfile.dev
+    #the dashes represents an array
+    ports: 
+      - "3000:3000"
+    volumes:
+      - app/node_modules
+      - .:/app
+  #second service to run tests
+  tests: 
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - app/node_modules
+      - .:/app
+    #override the startup command in the dockerfile
+    #we do not want to run npm start for this service
+    command: ["npm","run","test"]
