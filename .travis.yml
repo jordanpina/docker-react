@@ -1,0 +1,31 @@
+# any time we need to use docker, we need super user permissions
+sudo: required
+services:
+    # create a copy of docker in our running container
+    - docker
+# series of steps that need to be run before our tests run
+before_install:
+  # we need to first build our docker image using the Dockerfile.dev
+  # we need to tag this build because these commands are automated
+    # we dod not have the ability to copy and paste the build ids
+    # we could name the tag anything we want
+      # someName, thisIsMYApp, etc.
+        # this tag is only being used in the travis process
+        # convention calls for <username>/<repo name>
+  - docker build -t jordanpina/docker-react -f Dockerfile.dev .
+
+# let's tell travis how to run our test suite
+
+# script section contains all the commands to actually run our test suite
+# travis ci will watch the command below and will stop if it recives a status code other than 0
+script:
+  # run the docker image with the test command
+
+  # there is a gotcha with this
+    # travis ci quits after all tests are run
+    # however npm run test command once run, gives us a menu of options for us to choose 
+      # it does not exit
+    # therefore travis would just hang there becuase it is waiting for results
+    # to get around this we add -- -- coverage
+      # this will cause the npm run test command to exit
+  - docker run jordanpina/docker-react npm run test -- --coverage
