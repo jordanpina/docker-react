@@ -29,3 +29,46 @@ script:
     # to get around this we add -- -- coverage
       # this will cause the npm run test command to exit
   - docker run jordanpina/docker-react npm run test -- --coverage
+
+  # deploying our app
+
+  deploy: 
+    # travis ci has instructions built in for deployment to certain providers
+    # aws is one of them
+    # are essentially telling tavis to follow the elasticbeanstalk step of insturctions built in
+    provider: elasticbeanstalk
+    #region depends on where you originally created your elasticbeanstalk instance
+    # find this in the aws dashboard or by looking at the instance url
+      # example:  DockerReact-env.3wqa7m5rev.us-east-2.elasticbeanstalk.com
+      # we can see from the url it is us-east-2
+    region: us-east-2
+    # name of your app as named in aws
+    app: docker-react
+    # enviornment name
+    # it will be the third arrow name in aws dashboard for your app
+    env: "DockerReact-env"
+    # when travis decides to deploy your files
+    # it's going to take all your files in your github repo
+    # zip them into one file and copy them into an s3 bucket
+      # essentially a hardrive running on aws
+    # below we need to provide the name of the bucket travis ci is going to put our zip file into
+    # bucket name is already generated for you
+    # to get the name of the bucket 
+      # click services in the top left
+      # search for s3
+      # in the list look for your elasticbeanstalk instance with the region you used
+        # us-east-2 for this example
+      # click the link
+      # bucket name will be at the top with greater than arrow pointing to it
+        # example: elasticbeanstalk-us-east-2-100122912434
+    bucket_name: "elasticbeanstalk-us-east-2-100122912434"
+    # the bucket above will get reused for all the different enviornments you create
+    #  by default the bucket_path will be the app name from above
+    bucket_path: "docker-react"
+    # we do not want to launch any changes we make to production right away
+    # so we put on to specify only do this deployment when there is a change to master
+    on:
+      branch: master
+    access_key_id: $AWS_ACCESS_KEY
+    secret_access_key:
+      secure: "$AWS_SECRET_KEY"
