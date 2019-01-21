@@ -21,6 +21,9 @@ RUN npm run build
 # to start a new phase all we have to do is write FROM <image name>
 # think of FROM in your dockerfile as sepearte blocks that run and then terminate
 FROM nginx
+# mainly for deveopers to know which port this app needs to be mapped to
+# putting this instruction does nothing for us automatically
+EXPOSE 80
 # --from means from another phase
 # --from takes two inputs
     # where we want to copy from
