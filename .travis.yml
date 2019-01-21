@@ -41,9 +41,9 @@ script:
     # find this in the aws dashboard or by looking at the instance url
       # example:  DockerReact-env.3wqa7m5rev.us-east-2.elasticbeanstalk.com
       # we can see from the url it is us-east-2
-    region: us-east-2
+    region: "us-east-2"
     # name of your app as named in aws
-    app: docker-react
+    app: "docker-react"
     # enviornment name
     # it will be the third arrow name in aws dashboard for your app
     env: "DockerReact-env"
